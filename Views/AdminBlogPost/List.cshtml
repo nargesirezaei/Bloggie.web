@@ -1,0 +1,69 @@
+﻿@model List<Bloggie.web.Models.Domain.BlogPost>;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    <div class="bg-secondary bg-opacity-10 py-2">
+        <div class="container">
+            <h1>
+                Show all Post tag- Admin Functionality
+            </h1>
+        </div>
+    </div>
+
+
+    <div class="container py-5">
+    @if(Model != null && Model.Any())
+        {
+            <table class="table"> 
+            <thead>
+            <tr>
+            <td>Id</td>
+            <td>Header</td>
+            <td>Tags</td>
+            <td></td>
+            <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach(var postBlog in Model)
+                    {
+                        <tr>
+                            <td>@postBlog.Id</td>
+                            <td>@postBlog.Heading</td>
+                            <td>
+                            <div class="d-flex">
+                            @foreach(var tag in postBlog.Tags)
+                                    {
+                                        <span class="badge bg-secondary" mg-1>@tag.Name</span>
+                                    }
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <a asp-area="" asp-controller="AdminBlogPost"
+                                   asp-action="Edit" asp-route-id="@postBlog.Id">Update</a>
+                            </td>
+
+                            <td>
+                                <a asp-area="" asp-controller="AdminBlogPost"
+                                   asp-action="Delete" asp-route-id="@postBlog.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+
+            </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Page not found!</p>
+        }
+
+
+
+    </div>
+
+
+}
