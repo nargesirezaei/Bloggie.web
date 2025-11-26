@@ -27,7 +27,7 @@
 
         <div class="mb-3">
             <label class="form-label"> Content</label>
-            <textarea class="form-controle" id="content" asp-for="Content" ></textarea>
+            <textarea class="form-control" id="content" asp-for="Content" ></textarea>
         </div>
 
         <div class="mb-3">
@@ -36,8 +36,16 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Featured Image Upload</label>
+            <input  type="file" id="featuredImageUpload" class="form-control">
+            <img src="" id="featuredImageDisplay" style="display:none; width: 300px;" />
+        </div>
+
+
+        <div class="mb-3">
             <label class="form-label"> Featured Image URL</label>
-            <input type="text" class="form-control" id="featuredImageUrk" asp-for="FeaturedImageUrl" />
+            <input type="text" class="form-control" id="featuredImageUrl" asp-for="FeaturedImageUrl" />
+
         </div>
 
         <div class="mb-3">
@@ -74,8 +82,42 @@
     </form>
 </div>
 
-            @section Scripts {
-                <script>
+@section Scripts {
+    <script>
         var editor = new FroalaEditor("#content");
-                </script>
-            }
+
+        const featuredImageUploadElement = document.getElementById("featuredImageUpload");
+        const featuredImageUrlElement = document.getElementById("featuredImageUrl");
+        const featuredImageDisplayElement = document.getElementById("featuredImageDisplay");
+
+
+        async function uploadFeaturedImage(e) {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append("file", e.target.files[0]);
+
+            await fetch("/api/images", {
+                method: "post",
+                headers: {
+                    "Accept": "*/*"
+                },
+                body: data
+            })
+            .then(response => response.json())
+            .then(result => {
+                if(result && result.link)
+                {
+                featuredImageUrlElement.value = result.link;
+                featuredImageDisplayElement.src = result.link;
+                featuredImageDisplayElement.style.display = "block";
+                }
+
+            });
+        }
+
+        featuredImageUploadElement.addEventListener("change", uploadFeaturedImage);
+    </script>
+}
+
+}
