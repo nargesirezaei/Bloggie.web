@@ -31,6 +31,8 @@ namespace Bloggie.web.Controllers
             {
                 return Problem("something went wrong" , null , (int)HttpStatusCode.InternalServerError);
             }
+            //JsonResult er en http response.
+            //“Lag et lite midlertidig objekt som har én egenskap — link — med verdien fra imageUrl.”
             return new JsonResult(new { link = imageUrl });
         }
 

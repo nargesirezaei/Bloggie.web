@@ -36,7 +36,7 @@ namespace Bloggie.web.Repository
         //Metoden tar inn et bilde (IFormFile) fra for eksempel et skjema i frontend og returnerer en URL til det opplastede bildet
         public async Task<string> UploadAsync(IFormFile file)
         {
-            // incorporate/register cloudinary sdk and api så we can call it to upload our img
+            // incorporate/register cloudinary sdk and api so we can call it to upload our img
             //Dette client-objektet vet nå hvilken konto det skal laste opp til
             var client = new Cloudinary(account);
             var uploadParams = new ImageUploadParams()
