@@ -7,9 +7,9 @@ namespace Bloggie.web.Repository
     public class BlogPostRepository : IBlogPostRepository
     {
 
-        private readonly BloggieDbXontext dbContext;
+        private readonly BloggieDbContext dbContext;
 
-        public BlogPostRepository(BloggieDbXontext dbContext)
+        public BlogPostRepository(BloggieDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

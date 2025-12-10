@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bloggie.web.Migrations
 {
-    [DbContext(typeof(BloggieDbXontext))]
-    partial class BloggieDbXontextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(BloggieDbContext))]
+    partial class BloggieDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

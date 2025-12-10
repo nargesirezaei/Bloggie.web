@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bloggie.web.Migrations
 {
-    [DbContext(typeof(BloggieDbXontext))]
+    [DbContext(typeof(BloggieDbContext))]
     [Migration("20251210170733_RenameTagToCategory")]
     partial class RenameTagToCategory
     {
