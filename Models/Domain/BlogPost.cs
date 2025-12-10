@@ -14,7 +14,7 @@
         public bool Visible { get; set; }
 
         //tellig EF core that this class have multiple tags. dvs har relasjon med Tag tabellen
-        public ICollection<Tag>? Tags { get; set; }
+        public ICollection<Category>? Categories { get; set; }
 
     }
 }

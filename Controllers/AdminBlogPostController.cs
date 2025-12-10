@@ -24,7 +24,7 @@ namespace Bloggie.web.Controllers
             var tags = await tagRepository.GetAllAsync();
             var model = new AddBlogPostRequest
             {
-                Tags = tags.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
+                Categories = tags.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
             };
             return View(model);
         }
@@ -46,7 +46,7 @@ namespace Bloggie.web.Controllers
             };
             // we need to convert tags to domain and includ it to blogPost
             //listen er tøm
-            var selectedTag = new List<Tag>();
+            var selectedTag = new List<Category>();
             foreach(var selectedTagId in addBlogPostRequest.SelectedTags)
             {
                 var selectedTagIdAsGuid = Guid.Parse(selectedTagId);
@@ -54,7 +54,7 @@ namespace Bloggie.web.Controllers
                 if (existingTag != null)
                     selectedTag.Add(existingTag);        
             }
-            blogPost.Tags = selectedTag;
+            blogPost.Categories = selectedTag;
 
             await blogPostRepository.AddAsync(blogPost);
             return RedirectToAction("List");
@@ -88,7 +88,7 @@ namespace Bloggie.web.Controllers
                     ShortDescription = blogPost.ShortDescription,
                     PublishedDate = blogPost.PublishedDate,
                     Tags = tagsDomainModel.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
-                    SelectedTags = blogPost.Tags.Select(x => x.Id.ToString()).ToArray()
+                    SelectedTags = blogPost.Categories.Select(x => x.Id.ToString()).ToArray()
                 };
                 //denne returen er nå man er i edit side , men har data i input som man kan endre!
                 return View(model);
@@ -119,7 +119,7 @@ namespace Bloggie.web.Controllers
 
             };
             //map tag into domain model 
-            var selectedTags = new List<Tag>();
+            var selectedTags = new List<Category>();
             foreach(var selectedTagId in postRequest.SelectedTags)
             {
                 var selectedTagIdAsGuid = Guid.Parse(selectedTagId);
@@ -128,7 +128,7 @@ namespace Bloggie.web.Controllers
                     selectedTags.Add(existingTag);
 
             }
-            blogPost.Tags = selectedTags;
+            blogPost.Categories = selectedTags;
             var updatedBlog =  await blogPostRepository.UpdateAsync(blogPost);
             if (updatedBlog != null) { return RedirectToAction("List"); }
             return RedirectToAction("List");

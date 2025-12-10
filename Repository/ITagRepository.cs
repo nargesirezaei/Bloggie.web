@@ -4,11 +4,11 @@ namespace Bloggie.web.Repository
 {
     public interface ITagRepository
     {
-        Task<IEnumerable<Tag>> GetAllAsync();
-        Task<Tag?> GetAsync(Guid id);
-        Task<Tag?> AddAsync(Tag tag);
-        Task<Tag?> UpdateAsync(Tag tag);
-        Task<Tag> DeleteAsync(Guid id);
+        Task<IEnumerable<Category>> GetAllAsync();
+        Task<Category?> GetAsync(Guid id);
+        Task<Category?> AddAsync(Category tag);
+        Task<Category?> UpdateAsync(Category tag);
+        Task<Category> DeleteAsync(Guid id);
 
     }
 }

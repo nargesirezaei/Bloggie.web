@@ -35,17 +35,23 @@ namespace Bloggie.web.Repository
 
         public async Task<IEnumerable<BlogPost>> GetAllAsync()
         {
-            return await dbContext.BloggPosts.Include(x => x.Tags).ToListAsync();
+            return await dbContext.BloggPosts.Include(x => x.Categories).ToListAsync();
         }
 
         public async Task<BlogPost?> GetAsync(Guid id)
         {
-            return await dbContext.BloggPosts.Include(x=>x.Tags).FirstOrDefaultAsync(x => x.Id == id);
+            return await dbContext.BloggPosts.Include(x=>x.Categories).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<BlogPost?> GetByUrlHandler(string urlHandler)
+        {
+            return await dbContext.BloggPosts.Include(x =>x.Categories).FirstOrDefaultAsync(x=> x.UrlHandle == urlHandler);
+           
         }
 
         public async Task<BlogPost?> UpdateAsync(BlogPost post)
         {
-           var exixtingBlog =  await dbContext.BloggPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == post.Id);
+           var exixtingBlog =  await dbContext.BloggPosts.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == post.Id);
             if (exixtingBlog != null)
             {
                 exixtingBlog.Id = post.Id;
@@ -58,7 +64,7 @@ namespace Bloggie.web.Repository
                 exixtingBlog.Author = post.Author;
                 exixtingBlog.Content = post.Content;
                 exixtingBlog.Visible = post.Visible;    
-                exixtingBlog.Tags = post.Tags;
+                exixtingBlog.Categories = post.Categories;
 
                 
                 await dbContext.SaveChangesAsync();

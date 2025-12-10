@@ -28,7 +28,7 @@ namespace Bloggie.web.Controllers
         public async Task<IActionResult> Add(AddTagRequest addTagRequest)
         {
             //mapping 
-            var tag = new Tag
+            var tag = new Category
             {
                 Name = addTagRequest.Name,
                 DisplayName = addTagRequest.DisplayName
@@ -70,7 +70,7 @@ namespace Bloggie.web.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(UpdateTagRequest tag)
         {
-            var item = new Tag
+            var item = new Category
             {
                 Id = tag.Id,
                 Name = tag.Name,

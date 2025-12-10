@@ -11,38 +11,38 @@ namespace Bloggie.web.Repository
         {
             this.dbContext = dbContext;
         }
-        public async Task<Tag?> AddAsync(Tag tag)
+        public async Task<Category?> AddAsync(Category tag)
         {
-            await dbContext.Tags.AddAsync(tag);
+            await dbContext.Categories.AddAsync(tag);
             await dbContext.SaveChangesAsync();
             return tag;
         }
 
-        public async Task<Tag> DeleteAsync(Guid id)
+        public async Task<Category> DeleteAsync(Guid id)
         {
-            var exixtingTag = await dbContext.Tags.FindAsync(id);
+            var exixtingTag = await dbContext.Categories.FindAsync(id);
             if (exixtingTag != null)
             {
-                dbContext.Tags.Remove(exixtingTag);
+                dbContext.Categories.Remove(exixtingTag);
                 await dbContext.SaveChangesAsync();
                 return exixtingTag;
             }
             return null;
         }
 
-        public async Task<IEnumerable<Tag>> GetAllAsync()
+        public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return await dbContext.Tags.ToListAsync();
+            return await dbContext.Categories.ToListAsync();
         }
 
-        public Task<Tag?> GetAsync(Guid id)
+        public Task<Category?> GetAsync(Guid id)
         {
-            return dbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            return dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<Tag?> UpdateAsync(Tag tag)
+        public async Task<Category?> UpdateAsync(Category tag)
         {
-            var existingTag = await dbContext.Tags.FindAsync(tag.Id);
+            var existingTag = await dbContext.Categories.FindAsync(tag.Id);
             if (existingTag != null)
             {
                 existingTag.Name = tag.Name;

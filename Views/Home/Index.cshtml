@@ -1,8 +1,87 @@
-﻿@{
+﻿@model Bloggie.web.Models.ViewModels.HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-5 py-5">
+        <div class="col-12 col-lg-6">
+           <h1 class="display-5">
+               Bloggie - The Dev Blog
+           </h1>
+           <p class="lead">
+                Welcome to MrMehdi7, your source for honest and practical car reviews across Europe.
+                We test and talk about the cars real people drive — from compact city models to powerful SUVs.
+                Watch detailed reviews on YouTube, and follow our behind-the-wheel moments on Instagram and TikTok.
+           </p>
+        </div>
+
+        <div class="col-12 col-lg-6 text-center">
+            <img src="~/images/logo.jpeg"
+                 alt="MrMehdi7 Logo"
+                 class="img-fluid rounded-circle shadow-lg"
+                 style="width: 320px; height: 350px; " />
+        </div>
+
+        </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex">
+            @if(Model != null && Model.categories.Any())
+            {
+                foreach(var category in Model.categories)
+                {
+                    <span class="badge bg-dark me-1">
+                        @category.Name
+                    </span>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-15 col-md-10 col-lg-9">
+
+            @if (Model != null && Model.BlogPosts.Any())
+            {
+                foreach (var blogPost in Model.BlogPosts)
+                {
+                    <div class="mb-5 bg-light box-shadow p-5 rounded-3 shadow-sm">
+                        <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading"
+                             class="mb-3 d-block img-fluid rounded-3" />
+
+                        <h2 class="mb-3">@blogPost.Heading</h2>
+
+                        <p class="text-muted mb-3">
+                            Author: @blogPost.Author <br />
+                            Published: @blogPost.PublishedDate.ToShortDateString()
+                        </p>
+
+                        <div class="mb-3">
+                            @foreach (var tag in blogPost.Categories)
+                            {
+                                <span class="badge bg-secondary me-1">@tag.Name</span>
+                            }
+                        </div>
+
+                        <p class="mb-4">@blogPost.ShortDescription</p>
+                        <a class="btn btn-dark" 
+                           asp-area=""
+                           asp-controller="Blogs"
+                           asp-action="Index"
+                            asp-route-urlHandler="@blogPost.UrlHandle">Read more</a>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center text-muted">No blog posts available.</p>
+            }
+
+        </div>
+    </div>
 </div>

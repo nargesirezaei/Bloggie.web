@@ -8,8 +8,10 @@ namespace Bloggie.web.Repository
         Task<IEnumerable<BlogPost>> GetAllAsync();
         //these there methods can return null GetAsync, if id is wrong, thats whay we need nullable
         Task<BlogPost?> GetAsync(Guid id);
+        Task<BlogPost?> GetByUrlHandler(string urlHandler);
         Task<BlogPost?> UpdateAsync(BlogPost post);
         Task<BlogPost?> DeleteAsync(Guid id);
+        
         
 
 

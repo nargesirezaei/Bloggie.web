@@ -4,6 +4,7 @@ using Bloggie.web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bloggie.web.Migrations
 {
     [DbContext(typeof(BloggieDbXontext))]
-    partial class BloggieDbXontextModelSnapshot : ModelSnapshot
+    [Migration("20251208121843_AddUrlHandleToBlogPost")]
+    partial class AddUrlHandleToBlogPost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,19 +25,19 @@ namespace Bloggie.web.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BlogPostCategory", b =>
+            modelBuilder.Entity("BlogPostTag", b =>
                 {
                     b.Property<Guid>("BlogPostsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoriesId")
+                    b.Property<Guid>("TagsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("BlogPostsId", "CategoriesId");
+                    b.HasKey("BlogPostsId", "TagsId");
 
-                    b.HasIndex("CategoriesId");
+                    b.HasIndex("TagsId");
 
-                    b.ToTable("BlogPostCategory");
+                    b.ToTable("BlogPostTag");
                 });
 
             modelBuilder.Entity("Bloggie.web.Models.Domain.BlogPost", b =>
@@ -71,7 +74,6 @@ namespace Bloggie.web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UrlHandle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Visible")
@@ -82,7 +84,7 @@ namespace Bloggie.web.Migrations
                     b.ToTable("BloggPosts");
                 });
 
-            modelBuilder.Entity("Bloggie.web.Models.Domain.Category", b =>
+            modelBuilder.Entity("Bloggie.web.Models.Domain.Tag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,10 +100,10 @@ namespace Bloggie.web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("BlogPostCategory", b =>
+            modelBuilder.Entity("BlogPostTag", b =>
                 {
                     b.HasOne("Bloggie.web.Models.Domain.BlogPost", null)
                         .WithMany()
@@ -109,9 +111,9 @@ namespace Bloggie.web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bloggie.web.Models.Domain.Category", null)
+                    b.HasOne("Bloggie.web.Models.Domain.Tag", null)
                         .WithMany()
-                        .HasForeignKey("CategoriesId")
+                        .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

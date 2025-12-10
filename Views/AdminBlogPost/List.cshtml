@@ -34,7 +34,7 @@
                             <td>@postBlog.Heading</td>
                             <td>
                             <div class="d-flex">
-                            @foreach(var tag in postBlog.Tags)
+                                    @foreach (var tag in postBlog.Categories)
                                     {
                                         <span class="badge bg-secondary" mg-1>@tag.Name</span>
                                     }
