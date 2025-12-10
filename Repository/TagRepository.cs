@@ -6,8 +6,8 @@ namespace Bloggie.web.Repository
 {
     public class TagRepository : ITagRepository
     {
-        private readonly BloggieDbXontext dbContext;
-        public TagRepository(BloggieDbXontext dbContext)
+        private readonly BloggieDbContext dbContext;
+        public TagRepository(BloggieDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
