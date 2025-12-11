@@ -62,6 +62,7 @@ namespace Bloggie.web.Data
 
             superAdminUser.PasswordHash = new PasswordHasher<IdentityUser>()
                 .HashPassword(superAdminUser, "nargesadmin");
+
             builder.Entity<IdentityUser>().HasData(superAdminUser);
 
             //Add all de roles to super admin

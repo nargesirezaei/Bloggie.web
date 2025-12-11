@@ -38,7 +38,7 @@ namespace Bloggie.web.Controllers
                 if(roleIdentityResult.Succeeded)
                 {
                     //show success notif
-                    return RedirectToAction("Register");
+                    return RedirectToAction("Login");
                 }
             }
 
@@ -68,6 +68,12 @@ namespace Bloggie.web.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

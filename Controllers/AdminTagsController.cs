@@ -2,11 +2,14 @@
 using Bloggie.web.Models.Domain;
 using Bloggie.web.Models.ViewModels;
 using Bloggie.web.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bloggie.web.Controllers
 {
+    //with authorize, only logged inn user can use these functionality 
+    [Authorize(Roles = "Admin")]
     public class AdminTagsController : Controller
     {
         private ITagRepository tagRepository;
@@ -15,7 +18,8 @@ namespace Bloggie.web.Controllers
         {
             this.tagRepository = tagRepository;
         }
-        //these two add methods doing the Create functionaliity
+     
+    
         [HttpGet]
         public IActionResult Add()
         {
@@ -39,7 +43,6 @@ namespace Bloggie.web.Controllers
         }
 
 
-
         [HttpGet]
         [ActionName("List")]
         public async  Task<IActionResult> List()
@@ -47,7 +50,6 @@ namespace Bloggie.web.Controllers
             var tags = await tagRepository.GetAllAsync(); 
             return View(tags);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
@@ -66,7 +68,7 @@ namespace Bloggie.web.Controllers
             }
             return View(null);
         }
-
+    
         [HttpPost]
         public async Task<IActionResult> Update(UpdateTagRequest tag)
         {

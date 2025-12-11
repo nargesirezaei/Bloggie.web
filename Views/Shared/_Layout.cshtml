@@ -45,19 +45,25 @@
                 <!-- Navigasjonslenker (flyttet til venstre) -->
                 <div class="navbar-collapse collapse d-sm-inline-flex">
                     <ul class="navbar-nav ms-3">
-                        <!-- ms-3 gir kun litt luft -->
+                  
                       
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown">
-                                Admin
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="AdminTags" asp-action="Add">Add Tag</a></li>
-                                <li><a class="dropdown-item" asp-controller="AdminTags" asp-action="List">All Tags</a></li>
-                                <li><a class="dropdown-item" asp-controller="AdminBlogPost" asp-action="Add">Add BlogPost</a></li>
-                                <li><a class="dropdown-item" asp-controller="AdminBlogPost" asp-action="List">All Blog Posts</a></li>
-                            </ul>
-                        </li>
+                        <!-- this section is visible only for Admin and Super admin-->
+                        @if(signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="AdminTags" asp-action="Add">Add Tag</a></li>
+                                    <li><a class="dropdown-item" asp-controller="AdminTags" asp-action="List">All Tags</a></li>
+                                    <li><a class="dropdown-item" asp-controller="AdminBlogPost" asp-action="Add">Add BlogPost</a></li>
+                                    <li><a class="dropdown-item" asp-controller="AdminBlogPost" asp-action="List">All Blog Posts</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                      
                     </ul>
 
                     <div class="d-flex ms-auto align-items-center">
@@ -68,7 +74,7 @@
                                 @User?.Identity?.Name
                             </div>
 
-                            <a class="btn btn-light text-dark fw-semibold me-3" asp-area="" asp-controller="Account" asp-action="Login">LogOut</a>
+                            <a class="btn btn-light text-dark fw-semibold me-3" asp-area="" asp-controller="Account" asp-action="Logout">LogOut</a>
                         }
                         else
                         {
