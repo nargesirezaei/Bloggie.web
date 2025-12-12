@@ -46,9 +46,12 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
 
 app.UseAuthentication();
+
+app.UseRouting();
+
+
 app.UseAuthorization();
 
 app.MapStaticAssets();

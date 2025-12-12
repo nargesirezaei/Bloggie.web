@@ -54,14 +54,16 @@ namespace Bloggie.web.Data
             var superAdminId = "7f3e7cf7-8510-4e62-b772-e81dc008a57e";
             var superAdminUser = new IdentityUser
             {
-                UserName = "superadmin@Bloggie.com",
-                Email = "superadmin@bloggie.com".ToUpper(),
-                NormalizedEmail = "superadmin@bloggie.com".ToUpper(),
+                UserName = "superadmin@bloggie.com",
+                Email = "superadmin@bloggie.com",
+                NormalizedEmail = "SUPERADMIN@BLOGGIE.COM",
+                NormalizedUserName = "SUPERADMIN@BLOGGIE.COM",
                 Id = superAdminId,
             };
 
+
             superAdminUser.PasswordHash = new PasswordHasher<IdentityUser>()
-                .HashPassword(superAdminUser, "nargesadmin");
+                .HashPassword(superAdminUser, "adminnarges");
 
             builder.Entity<IdentityUser>().HasData(superAdminUser);
 

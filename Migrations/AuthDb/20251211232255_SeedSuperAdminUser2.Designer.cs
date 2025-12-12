@@ -4,6 +4,7 @@ using Bloggie.web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bloggie.web.Migrations.AuthDb
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251211232255_SeedSuperAdminUser2")]
+    partial class SeedSuperAdminUser2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,14 +169,14 @@ namespace Bloggie.web.Migrations.AuthDb
                         {
                             Id = "7f3e7cf7-8510-4e62-b772-e81dc008a57e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1ef60c6b-839c-4273-96f7-31aa024047d0",
+                            ConcurrencyStamp = "8485c6c4-ea83-4d91-be8d-1ecb059be6e4",
                             Email = "SUPERADMIN@BLOGGIE.COM",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SUPERADMIN@BLOGGIE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPCPFGsArH9E3W/zVg6SFvph/PidI181Df0NVNeGJAjj46rZ4FPVOb413Y2C13Lb2A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOLbbiXf6gSe3/21uUKzWNDVM2ZYQ8/tOBXUanLJnfRD+Himu9IQDl28t6DZoFguQQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "13dc2fe8-2d14-45a3-85d4-cc33c37763e1",
+                            SecurityStamp = "fc98bcff-e079-4a49-9359-309ac407a21c",
                             TwoFactorEnabled = false,
                             UserName = "superadmin@Bloggie.com"
                         });
