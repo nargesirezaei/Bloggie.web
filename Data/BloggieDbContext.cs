@@ -14,6 +14,7 @@ namespace Bloggie.web.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<BlogPost> BloggPosts { get; set; }
+        public DbSet<BlogPostLike> BlogPostLike { get; set; }
 
     }
 }

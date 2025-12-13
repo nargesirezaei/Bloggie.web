@@ -16,5 +16,9 @@
         //tellig EF core that this class have multiple tags. dvs har relasjon med Tag tabellen
         public ICollection<Category>? Categories { get; set; }
 
+        //navigation property for blogpost like & comment
+        public ICollection<BlogPostLike> Likes { get; set; }
+
+
     }
 }

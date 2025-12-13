@@ -81,7 +81,7 @@ namespace Bloggie.web.Controllers
             var updatedTag = await tagRepository.UpdateAsync(item);
             if(updatedTag != null)
             {
-                //show success notif
+                return RedirectToAction("List");
             }
             else
             {
