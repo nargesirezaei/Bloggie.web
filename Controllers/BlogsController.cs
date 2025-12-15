@@ -36,15 +36,17 @@ namespace Bloggie.web.Controllers
                 if (signInManager.IsSignedIn(User))
                 {
                     var allLikesForBlog = await blogLikeRepository.GetLikesForBlog(blogPost.Id);
+
                     var userId = userManager.GetUserId(User);
 
                     if (userId != null)
                     {
                         var likeForUser = allLikesForBlog.FirstOrDefault(x => x.UserId == Guid.Parse(userId));
-                        if (likeForUser != null)
-                        {
-                            liked = true; // ✅ bare hvis bruker faktisk har likt
-                        }
+                        liked = likeForUser != null;
+                        //if (likeForUser != null)
+                        //{
+                        //    liked = true; // ✅ bare hvis bruker faktisk har likt
+                        //}
                     }
                 }
 

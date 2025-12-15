@@ -20,6 +20,8 @@ namespace Bloggie.web.Controllers
         [Route("Add")]
         public async Task<IActionResult> AddLike([FromBody] AddLikeRequest addLikeRequest)
         {
+
+
             //domain model(BlogPostLike) for addLikeReguest viewModel
             var model = new BlogPostLike
             {
@@ -27,7 +29,18 @@ namespace Bloggie.web.Controllers
 
                 UserId = addLikeRequest.UserID
             };
-            await blogPostLikeRepository.AddLikeForBlog(model);
+
+            //await blogPostLikeRepository.AddLikeForBlog(model);
+            //return Ok();
+
+            var addedLike = await blogPostLikeRepository.AddLikeForBlog(model);
+
+            if (addedLike == null)
+            {
+                // Brukeren har allerede likt
+                return Conflict(new { message = "User already liked this post" });
+            }
+
             return Ok();
         }
 

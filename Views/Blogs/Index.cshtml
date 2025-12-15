@@ -26,11 +26,21 @@
                 <div class="mb-3">
                     @if(signInManager.IsSignedIn(User))
                     {
-                       <a id="btnLike" style="cursor:pointer;">
-                            <i class="bi bi-hand-thumbs-up"></i>
-                       </a>
+                        @if(Model.Liked)
+                        {
+                            <a  style="cursor:pointer;">
+                                <i class="bi bi-hand-thumbs-up-fill"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a id="btnLike" style="cursor:pointer;">
+                                <i class="bi bi-hand-thumbs-up"></i>
+                            </a>
+                        }
+                       
                     }
-                    <span>@Model.TotalLikes</span> likes
+                    <span id="totalLikes">@Model.TotalLikes</span> likes
                 </div>
 
 
@@ -54,9 +64,25 @@
         </div>
     </div>
 </div>
-@section scripts {
-    <script>
+@section Scripts {
+   @*  <script>
         const btnLikeElement = document.getElementById('btnLike');
+        const totalLikeElement = document.getElementById('totalLikes');
+
+
+        async function getTotalLikes() {
+            fetch('/api/BlogPostLike/@Model.Id/totalLikes',{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                }
+            })
+            .then(data => data.JSON())
+            .then(result => totalLikeElement.innerHTML = result );
+        }
+
+
         async function addLikeForBlog(){
             fetch('/api/BlogPostLike/Add', {
                 method: 'POST',
@@ -68,13 +94,73 @@
                     BlogPostId: '@Model.Id', 
                     UserID: '@userManager.GetUserId(User)' 
                 })
-            }).then(console.log("request finished"));
+            }).then(() => {
+                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+                btnLikeElement.removeEventListener('click', addLikeForBlog);
+                getTotalLikes();
+            });
 
         }
 
 
         btnLikeElement.addEventListener('click', addLikeForBlog);
+    </script> *@
+
+
+    <script>
+        const btnLikeElement = document.getElementById('btnLike');
+        const totalLikeElement = document.getElementById('totalLikes');
+
+        // Hent total likes fra API
+        async function getTotalLikes() {
+            try {
+                const response = await fetch(`/api/BlogPostLike/@Model.Id/totalLikes`);
+                if (!response.ok) throw new Error("Kunne ikke hente total likes");
+                const result = await response.json();
+                totalLikeElement.innerText = result;
+            } catch (error) {
+                console.error('Error getting total likes:', error);
+            }
+        }
+
+        // Legg til like
+        async function addLikeForBlog() {
+            try {
+                const response = await fetch('/api/BlogPostLike/Add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': '*/*'
+                    },
+                    body: JSON.stringify({
+                        BlogPostId: '@Model.Id',
+                        UserID: '@userManager.GetUserId(User)'
+                    })
+                });
+
+                if (response.status === 409) {
+                    console.log("User already liked this post");
+                    btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill text-primary"></i>';
+                    return;
+                }
+
+                if (!response.ok) throw new Error("Failed to add like");
+
+                // Oppdater ikon og antall
+                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill text-primary"></i>';
+                btnLikeElement.removeEventListener('click', addLikeForBlog);
+                await getTotalLikes();
+            } catch (error) {
+                console.error('Error adding like:', error);
+            }
+        }
+
+        // Knytt event kun hvis knapp finnes
+        if (btnLikeElement) {
+            btnLikeElement.addEventListener('click', addLikeForBlog);
+        }
     </script>
+
 
 }
 

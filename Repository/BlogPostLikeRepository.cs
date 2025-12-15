@@ -15,6 +15,20 @@ namespace Bloggie.web.Repository
 
         public async Task<BlogPostLike> AddLikeForBlog(BlogPostLike blogPostLike)
         {
+
+            // Sjekk om brukeren allerede har likt dette innlegget
+            var existingLike = await bloggieDbCtx.BlogPostLike
+                .FirstOrDefaultAsync(x =>
+                    x.BlogPostId == blogPostLike.BlogPostId &&
+                    x.UserId == blogPostLike.UserId);
+
+
+            if (existingLike != null)
+            {
+                // Returner null for å indikere at brukeren allerede har likt
+                return null;
+            }
+
             await bloggieDbCtx.BlogPostLike.AddAsync(blogPostLike);
             await bloggieDbCtx.SaveChangesAsync();
             return blogPostLike;
