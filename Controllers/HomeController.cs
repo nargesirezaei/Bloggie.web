@@ -23,10 +23,11 @@ namespace Bloggie.web.Controllers
 
         public async  Task<IActionResult> Index()
         {
-            //getting all post
+            //getting all post domain model 
             var blogPosts = await blogRepository.GetAllAsync();
-            //getting all Categories
+            //getting all Categories, domain model
             var categories = await tagRepository.GetAllAsync();
+            //mapping fra domain to viewModel
             var model = new HomeViewModel
             {
                 BlogPosts = blogPosts,
