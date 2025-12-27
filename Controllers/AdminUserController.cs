@@ -46,39 +46,54 @@ namespace Bloggie.web.Controllers
         [HttpPost]
         public async Task<IActionResult> List(UserViewModel request)
         {
+            if (!ModelState.IsValid)
+            {
+                // Last inn eksisterende brukere på nytt, slik at viewet fungerer
+                var users = await userRepository.GetAll();
+                request.Users = users.Select(u => new Models.ViewModels.User
+                {
+                    Id = Guid.Parse(u.Id),
+                    Username = u.UserName,
+                    Email = u.Email
+                }).ToList();
+
+                return View(request);
+            }
+
             var identityUser = new IdentityUser
             {
                 UserName = request.Username,
                 Email = request.Email
             };
 
-            var identityResult =
-                await userManager.CreateAsync(identityUser, request.Password);
+            var identityResult = await userManager.CreateAsync(identityUser, request.Password);
 
-            if (identityResult is not null)
+            if (identityResult != null && identityResult.Succeeded)
             {
-                if (identityResult.Succeeded)
+                var roles = new List<string> { "User" };
+
+                if (request.AdminRoleCheckBox)
                 {
-                    //assign roles to this user 
-                    var roles = new List<string> { "User" };
-
-                    if (request.AdminRoleCheckBox)
-                    {
-                        roles.Add("Admin");
-                    }
-
-                    identityResult =
-                       await userManager.AddToRolesAsync(identityUser, roles);
-
-
-
-                    if(identityResult is not null && identityResult.Succeeded)
-                    {
-                        return RedirectToAction("List", "AdminUser");
-                    }
+                    roles.Add("Admin");
                 }
+
+                await userManager.AddToRolesAsync(identityUser, roles);
+
+                return RedirectToAction("List");
             }
-            return View();
+
+            // Hvis noe går galt under oppretting, vis feilmeldinger
+            ModelState.AddModelError("", "Failed to create user.");
+
+            var allUsers = await userRepository.GetAll();
+            request.Users = allUsers.Select(u => new Models.ViewModels.User
+            {
+                Id = Guid.Parse(u.Id),
+                Username = u.UserName,
+                Email = u.Email
+            }).ToList();
+
+            return View(request);
         }
 
         [HttpPost]

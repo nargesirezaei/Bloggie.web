@@ -11,8 +11,11 @@ namespace Bloggie.web.Repository
         Task<BlogPost?> GetByUrlHandler(string urlHandler);
         Task<BlogPost?> UpdateAsync(BlogPost post);
         Task<BlogPost?> DeleteAsync(Guid id);
-        
-        
+
+        Task<IEnumerable<BlogPost>> GetByCategoryAsync(Guid categoryId);
+
+
+
 
 
     }

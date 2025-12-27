@@ -44,7 +44,7 @@ namespace Bloggie.web.Controllers
                     }
                 }
             }
-            //show success notif
+            
             return View();
         }
 

@@ -13,25 +13,38 @@ namespace Bloggie.web.Controllers
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IBlogPostCommentRepository blogPostCommentRepository;
+        private readonly ITagRepository tagRepository;
         public BlogsController(IBlogPostRepository blogPostRepository,
                                IBlogPostLikeRepository blogLikeRepository, 
                                SignInManager<IdentityUser> signInManager,
-                               UserManager<IdentityUser> userManager, 
-                               IBlogPostCommentRepository blogPostCommentRepository)
+                               UserManager<IdentityUser> userManager,
+                               IBlogPostCommentRepository blogPostCommentRepository,
+                               ITagRepository tagRepository)
         {
             this.blogPostRepository = blogPostRepository;
             this.blogLikeRepository = blogLikeRepository;
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.blogPostCommentRepository = blogPostCommentRepository;
+            this.tagRepository = tagRepository;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string urlHandler)
+        public async Task<IActionResult> Index(string urlHandler, string? selectedCategory)
         {
             var liked = false;
             var blogPost = await blogPostRepository.GetByUrlHandler(urlHandler);
+            var categoriese = tagRepository.GetAllAsync();
             var blogDetailsViewModel = new BlogDetailsViewModel();
 
+            //henter alle blogpost
+            var allPosts = await blogPostRepository.GetAllAsync();
+
+
+            //if (!string.IsNullOrWhiteSpace(selectedCategory))
+            //{
+            //    blogPost = await blogPost.Where(p => p.Categories.Any(c => c.Name == selectedCategory))
+            //    .ToList();
+            //}
 
             if (blogPost != null)
             {

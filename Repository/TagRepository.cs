@@ -1,6 +1,7 @@
 ﻿using Bloggie.web.Data;
 using Bloggie.web.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Bloggie.web.Repository
 {
@@ -30,9 +31,21 @@ namespace Bloggie.web.Repository
             return null;
         }
 
-        public async Task<IEnumerable<Category>> GetAllAsync()
+        public async Task<IEnumerable<Category>> GetAllAsync(string? searchQuery)
         {
-            return await dbContext.Categories.ToListAsync();
+            //ved bruk av AsQueryable har vi en liste som vi kan query på det!
+            var query = dbContext.Categories.AsQueryable();
+
+            //Filtering 
+            if(string.IsNullOrWhiteSpace(searchQuery)==false)
+            {
+                query = query.Where(x => x.Name.Contains(searchQuery) || 
+                                    x.DisplayName.Contains(searchQuery));
+            }
+
+            //sorting
+            //pagination
+            return await query.ToListAsync();
         }
 
         public Task<Category?> GetAsync(Guid id)

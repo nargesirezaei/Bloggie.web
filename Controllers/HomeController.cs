@@ -1,8 +1,9 @@
-using System.Diagnostics;
 using Bloggie.web.Models;
+using Bloggie.web.Models.Domain;
 using Bloggie.web.Models.ViewModels;
 using Bloggie.web.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Bloggie.web.Controllers
 {
@@ -21,17 +22,28 @@ namespace Bloggie.web.Controllers
 
         }
 
-        public async  Task<IActionResult> Index()
+        public async  Task<IActionResult> Index(string? selectedCategory)
         {
-            //getting all post domain model 
-            var blogPosts = await blogRepository.GetAllAsync();
-            //getting all Categories, domain model
+            ViewBag.SelectedCategory = selectedCategory;
+
+
             var categories = await tagRepository.GetAllAsync();
-            //mapping fra domain to viewModel
+
+            IEnumerable<BlogPost> blogPosts;
+
+            if (!string.IsNullOrWhiteSpace(selectedCategory))
+            {
+                blogPosts = await blogRepository.GetByCategoryAsync(Guid.Parse(selectedCategory));
+            }
+            else
+            {
+                blogPosts = await blogRepository.GetAllAsync();
+            }
+
             var model = new HomeViewModel
             {
                 BlogPosts = blogPosts,
-                categories = categories
+                Categories = categories
             };
 
             return View(model);
