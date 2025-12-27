@@ -33,11 +33,9 @@ namespace Bloggie.web.Controllers
         {
             var liked = false;
             var blogPost = await blogPostRepository.GetByUrlHandler(urlHandler);
-            var categoriese = tagRepository.GetAllAsync();
+
             var blogDetailsViewModel = new BlogDetailsViewModel();
 
-            //henter alle blogpost
-            var allPosts = await blogPostRepository.GetAllAsync();
 
 
             //if (!string.IsNullOrWhiteSpace(selectedCategory))

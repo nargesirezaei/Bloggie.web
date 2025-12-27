@@ -30,37 +30,54 @@ namespace Bloggie.web.Controllers
             };
             return View(model);
         }
-        [HttpPost]
-        public async Task<IActionResult> Add(AddBlogPostRequest addBlogPostRequest)
-        {
-            //we need to map view model to domain model befor sending it to dbcontext
-            var blogPost = new BlogPost
-            {
-                Heading = addBlogPostRequest.Heading,
-                PageTitle = addBlogPostRequest.PageTitle,
-                Content = addBlogPostRequest.Content,
-                ShortDescription = addBlogPostRequest.ShortDescription,
-                FeaturedImageUrl = addBlogPostRequest.FeaturedImageUrl,
-                UrlHandle = addBlogPostRequest.UrlHandle,
-                PublishedDate = addBlogPostRequest.PublishedDate,
-                Author = addBlogPostRequest.Author,
-                Visible = addBlogPostRequest.Visible 
-            };
-            // we need to convert tags to domain and includ it to blogPost
-            //listen er tøm
-            var selectedTag = new List<Category>();
-            foreach(var selectedTagId in addBlogPostRequest.SelectedTags)
-            {
-                var selectedTagIdAsGuid = Guid.Parse(selectedTagId);
-                var existingTag = await tagRepository.GetAsync(selectedTagIdAsGuid);
-                if (existingTag != null)
-                    selectedTag.Add(existingTag);        
-            }
-            blogPost.Categories = selectedTag;
 
-            await blogPostRepository.AddAsync(blogPost);
-            return RedirectToAction("List");
-        }
+        [HttpPost] 
+         public async Task<IActionResult> Add(AddBlogPostRequest addBlogPostRequest)
+            {
+                if (!ModelState.IsValid)
+                {
+                    // Hvis validering feiler, må vi laste categories på nytt
+                    var tags = await tagRepository.GetAllAsync();
+                    addBlogPostRequest.Categories = tags
+                        .Select(x => new SelectListItem
+                        {
+                            Text = x.Name,
+                            Value = x.Id.ToString()
+                        });
+
+                    return View(addBlogPostRequest);
+                }
+
+                // Hent ALLE tags én gang (viktig)
+                var allTags = await tagRepository.GetAllAsync();
+
+                // Filtrer valgte tags i minne
+                var selectedTags = allTags
+                    .Where(x => addBlogPostRequest.SelectedTags != null &&
+                                addBlogPostRequest.SelectedTags.Contains(x.Id.ToString()))
+                    .ToList();
+
+                // Map ViewModel → Domain
+                var blogPost = new BlogPost
+                {
+                    Heading = addBlogPostRequest.Heading,
+                    PageTitle = addBlogPostRequest.PageTitle,
+                    Content = addBlogPostRequest.Content,
+                    ShortDescription = addBlogPostRequest.ShortDescription,
+                    FeaturedImageUrl = addBlogPostRequest.FeaturedImageUrl,
+                    UrlHandle = addBlogPostRequest.UrlHandle,
+                    PublishedDate = addBlogPostRequest.PublishedDate,
+                    Author = addBlogPostRequest.Author,
+                    Visible = addBlogPostRequest.Visible,
+                    Categories = selectedTags
+                };
+
+                await blogPostRepository.AddAsync(blogPost);
+
+                return RedirectToAction("List");
+            }
+
+        
 
         [HttpGet]
         public async Task<IActionResult> List()
